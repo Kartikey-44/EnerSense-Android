@@ -10,16 +10,18 @@
     tools:context=".MainActivity">
 
     <!-- Top App Bar / Compact Header from Stitch Specification -->
+
+    <!-- NavHost Fragment for Screen Routing -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="56dp"
         android:background="@color/surface_white"
         android:elevation="1dp"
+        android:minHeight="56dp"
         app:title="EnerSense"
-        app:titleTextColor="@color/brand_primary"
-        app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium">
+        app:titleTextAppearance="@style/TextAppearance.Material3.TitleMedium"
+        app:titleTextColor="@color/brand_primary">
 
         <ImageView
             android:id="@+id/ivProfileHeader"
@@ -27,14 +29,13 @@
             android:layout_height="36dp"
             android:layout_gravity="end"
             android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_person"
-            app:tint="@color/brand_primary"
             android:background="@drawable/bg_forecast_badge"
+            android:contentDescription="Profile icon"
             android:padding="6dp"
-            android:contentDescription="Profile icon" />
+            android:src="@drawable/ic_person"
+            app:tint="@color/brand_primary" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- NavHost Fragment for Screen Routing -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"

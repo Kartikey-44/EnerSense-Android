@@ -76,7 +76,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                             val formattedDate = formatDate(rawDate)
                             binding.tvForecastDate.text = if (formattedDate.isNotEmpty()) "For $formattedDate" else ""
 
-                            // Consumer insight: e.g. "Your energy use is expected to be around 1.8 kWh tomorrow."
+                            // Consumer insight: e.g. "Your energy use is expected to be around 6.380 Wh tomorrow."
                             binding.tvConsumerInsight.text = "Your energy use is expected to be around $formattedVal $unit tomorrow."
 
                             binding.tvForecastModel.text = forecast.modelName ?: forecast.method ?: "7-Day Simple Moving Average"
@@ -103,12 +103,9 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
 
     private fun formatEnergy(wh: Double): Pair<String, String> {
         return if (wh >= 1000.0) {
-            Pair(String.format(Locale.US, "%.1f", wh / 1000.0), "kWh")
-        } else if (wh > 0.0 && wh < 50.0) {
-            // In case backend already sent kWh
-            Pair(String.format(Locale.US, "%.1f", wh), "kWh")
+            Pair(String.format(Locale.US, "%.2f", wh / 1000.0), "kWh")
         } else {
-            Pair(String.format(Locale.US, "%.1f", wh), "Wh")
+            Pair(String.format(Locale.US, "%.3f", wh), "Wh")
         }
     }
 

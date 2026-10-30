@@ -66,13 +66,13 @@ class HomeViewModel(
                     val data = result.data
                     val wh = data.consumption ?: data.totalConsumption ?: 0.0
                     if (wh <= 0.0) {
-                        _consumptionState.value = UiState.Empty("No consumption data available for today.\nThe available dataset contains historical consumption data.")
+                        _consumptionState.value = UiState.Success(data) // Show success even if 0 or use data
                     } else {
                         _consumptionState.value = UiState.Success(data)
                     }
                 }
                 is NetworkResult.Empty -> {
-                    _consumptionState.value = UiState.Empty("No consumption data available for today.\nThe available dataset contains historical consumption data.")
+                    _consumptionState.value = UiState.Empty("No consumption data available for today.")
                 }
                 is NetworkResult.Error -> {
                     _consumptionState.value = UiState.Error(getUserFriendlyMessage(result.code, result.message))
@@ -92,10 +92,14 @@ class HomeViewModel(
                     _forecastState.value = UiState.Success(result.data)
                 }
                 is NetworkResult.Empty -> {
-                    _forecastState.value = UiState.Empty("No forecast available.")
+                    _forecastState.value = UiState.Empty("Forecast unavailable for the current simulation window.")
                 }
                 is NetworkResult.Error -> {
-                    _forecastState.value = UiState.Error(getUserFriendlyMessage(result.code, result.message))
+                    if (result.code == 422 || result.code == 404 || result.code == 400 || result.message.contains("NO_HISTORICAL_READINGS", ignoreCase = true)) {
+                        _forecastState.value = UiState.Empty("Forecast unavailable for the current simulation window.")
+                    } else {
+                        _forecastState.value = UiState.Error(getUserFriendlyMessage(result.code, result.message))
+                    }
                 }
                 is NetworkResult.Exception -> {
                     _forecastState.value = UiState.Error("Network failure. Please check your connection.")
@@ -146,10 +150,6 @@ class HomeViewModel(
                 }
             }
         }
-    }
-
-    fun refreshAnomaly() {
-        fetchAnomaly()
     }
 
     private fun getUserFriendlyMessage(code: Int, message: String): String {
