@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing & Margins -->
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <!-- Card dimensions -->
+
+    <dimen name="card_padding">20dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_size_title">22sp</dimen>
+    <dimen name="text_size_headline">16sp</dimen>
+    <dimen name="text_size_body">14sp</dimen>
+    <dimen name="text_size_caption">12sp</dimen>
+    <dimen name="text_size_hero">36sp</dimen>
+
+    <dimen name="margin_normal">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_tiny">4dp</dimen>
+
+    <!-- Card Corners -->
+    <dimen name="card_corner_radius">18dp</dimen>
+    <dimen name="card_corner_small">12dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+
+    <!-- Touch Targets & Heights -->
+    <dimen name="min_touch_target">48dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+</resources>

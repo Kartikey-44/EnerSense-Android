@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/destination_home">
+
+    <fragment
+        android:id="@+id/destination_home"
+        android:name="ind.finance.enersense.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_history"
+            app:destination="@id/destination_history" />
+        <action
+            android:id="@+id/action_home_to_analytics"
+            app:destination="@id/destination_analytics" />
+        <action
+            android:id="@+id/action_home_to_simulation"
+            app:destination="@id/destination_simulation" />
+        <action
+            android:id="@+id/action_home_to_forecast"
+            app:destination="@id/destination_forecast" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/destination_history"
+        android:name="ind.finance.enersense.ui.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
+        android:id="@+id/destination_analytics"
+        android:name="ind.finance.enersense.ui.analytics.AnalyticsFragment"
+        android:label="Analytics"
+        tools:layout="@layout/fragment_analytics" />
+
+    <fragment
+        android:id="@+id/destination_simulation"
+        android:name="ind.finance.enersense.ui.simulation.SimulationFragment"
+        android:label="Live Simulation"
+        tools:layout="@layout/fragment_simulation" />
+
+    <fragment
+        android:id="@+id/destination_forecast"
+        android:name="ind.finance.enersense.ui.forecast.ForecastFragment"
+        android:label="Tomorrow's Forecast"
+        tools:layout="@layout/fragment_forecast" />
+
+    <fragment
+        android:id="@+id/destination_profile"
+        android:name="ind.finance.enersense.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>

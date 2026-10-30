@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#087F5B</color>
+    <color name="primary_dark">#056B4D</color>
+    <color name="accent">#14B87A</color>
+    <color name="bg_color">#F6F8F7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#15231F</color>
+    <color name="text_secondary">#64736D</color>
+    <color name="divider">#E3EAE7</color>
+    <color name="success">#16A36A</color>
+    <color name="error_color">#D64545</color>
+    <color name="forecast_accent">#2A8FB7</color>
+
+    <!-- Stitch design system aliases -->
+    <color name="brand_primary">#0B533E</color>
+    <color name="brand_primary_dark">#083E2E</color>
+    <color name="brand_primary_light">#147558</color>
+    <color name="brand_mint_surface">#E2F3EC</color>
+    <color name="brand_mint_surface_subtle">#F0F8F4</color>
+    <color name="brand_mint_accent">#34D399</color>
+    <color name="forecast_blue">#2563EB</color>
+    <color name="forecast_blue_light">#DBEAFE</color>
+    <color name="forecast_blue_subtle">#EFF6FF</color>
+    <color name="background_light">#F8F9FA</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="surface_card_border">#EDEFF2</color>
+    <color name="surface_divider">#E2E8F0</color>
+    <color name="text_muted">#9CA3AF</color>
+    <color name="status_active_dot">#10B981</color>
+    <color name="status_error_red">#DC2626</color>
+    <color name="status_error_bg">#FEE2E2</color>
+</resources>
