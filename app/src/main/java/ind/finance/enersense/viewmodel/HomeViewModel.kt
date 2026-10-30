@@ -148,10 +148,6 @@ class HomeViewModel(
         }
     }
 
-    fun refreshAnomaly() {
-        fetchAnomaly()
-    }
-
     private fun getUserFriendlyMessage(code: Int, message: String): String {
         return when (code) {
             400 -> "Invalid request. Please check parameters."

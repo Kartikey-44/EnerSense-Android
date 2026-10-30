@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import ind.finance.enersense.R
-import ind.finance.enersense.data.remote.dto.AnomalyDto
 import ind.finance.enersense.data.remote.RetrofitClient
 import ind.finance.enersense.data.repository.AnomalyRepository
 import ind.finance.enersense.data.repository.ConsumptionRepository
@@ -70,10 +69,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         binding.btnSimulation.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_simulation)
-        }
-
-        binding.btnLaunchSimulation.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_simulation)
         }
     }
@@ -200,97 +195,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 }
 
                 launch {
-                    viewModel.anomalyState.collectLatest { state ->
-                        renderAnomalyState(state)
+                    viewModel.anomalyState.collectLatest { _ ->
+                        // Phase 2A state collected; UI rendering in Phase 2B/UI phase
                     }
                 }
             }
-        }
-    }
-
-    private fun renderAnomalyState(state: UiState<AnomalyDto>) {
-        binding.progressBarAnomaly.visibility = View.GONE
-        binding.tvAnomalyError.visibility = View.GONE
-        binding.tvAnomalyDetails.visibility = View.GONE
-
-        when (state) {
-            is UiState.Loading -> {
-                binding.progressBarAnomaly.visibility = View.VISIBLE
-                binding.tvAnomalyStatus.text = "Checking"
-                binding.tvAnomalyMessage.text = "Checking your energy usage..."
-            }
-            is UiState.Empty -> {
-                binding.tvAnomalyStatus.text = "Unavailable"
-                binding.tvAnomalyMessage.text = "No anomaly data available yet."
-                binding.tvAnomalyDetails.visibility = View.VISIBLE
-                binding.tvAnomalyDetails.text = state.message
-            }
-            is UiState.Error -> {
-                binding.tvAnomalyStatus.text = "Unavailable"
-                binding.tvAnomalyMessage.text = "Anomaly status could not be loaded."
-                binding.tvAnomalyError.visibility = View.VISIBLE
-                binding.tvAnomalyError.text = state.message
-            }
-            is UiState.Success -> renderAnomaly(state.data)
-        }
-    }
-
-    private fun renderAnomaly(anomaly: AnomalyDto) {
-        val status = anomaly.status.orEmpty().uppercase(Locale.US)
-        when (status) {
-            "NORMAL" -> {
-                binding.tvAnomalyStatus.text = "Normal"
-                binding.tvAnomalyMessage.text =
-                    anomaly.userMessage ?: "Your energy usage looks normal"
-                showAnomalyDetails(anomaly)
-            }
-            "INSUFFICIENT_BASELINE" -> {
-                binding.tvAnomalyStatus.text = "Learning"
-                binding.tvAnomalyMessage.text =
-                    anomaly.userMessage ?: "Learning your usual usage"
-                binding.tvAnomalyDetails.visibility = View.VISIBLE
-                binding.tvAnomalyDetails.text =
-                    "More simulated consumption history is needed before unusual usage can be identified."
-            }
-            "UNUSUAL" -> {
-                binding.tvAnomalyStatus.text =
-                    if (anomaly.isNewEpisode == true) "New unusual usage" else "Unusual usage"
-                binding.tvAnomalyMessage.text =
-                    anomaly.userMessage ?: "Unusual energy usage detected"
-                showAnomalyDetails(anomaly)
-            }
-            else -> {
-                binding.tvAnomalyStatus.text = anomaly.status ?: "Status unavailable"
-                binding.tvAnomalyMessage.text =
-                    anomaly.userMessage ?: "Anomaly status is not available yet."
-                showAnomalyDetails(anomaly)
-            }
-        }
-    }
-
-    private fun showAnomalyDetails(anomaly: AnomalyDto) {
-        val details = buildList {
-            anomaly.severity?.takeIf { it.isNotBlank() }?.let { add("Severity: $it") }
-            anomaly.currentConsumptionWh?.let { add("Current: ${formatEnergy(it)}") }
-            anomaly.typicalConsumptionWh?.let { add("Typical: ${formatEnergy(it)}") }
-            anomaly.differenceWh?.let { add("Difference: ${formatEnergy(it)}") }
-            anomaly.percentageAboveTypical?.let {
-                add("Above typical: ${String.format(Locale.US, "%.2f%%", it)}")
-            }
-            anomaly.simulatedTimestamp?.takeIf { it.isNotBlank() }?.let { add("Simulated: $it") }
-        }
-
-        if (details.isNotEmpty()) {
-            binding.tvAnomalyDetails.visibility = View.VISIBLE
-            binding.tvAnomalyDetails.text = details.joinToString(" • ")
-        }
-    }
-
-    private fun formatEnergy(wattHours: Double): String {
-        return if (kotlin.math.abs(wattHours) >= 1000.0) {
-            String.format(Locale.US, "%.2f kWh", wattHours / 1000.0)
-        } else {
-            String.format(Locale.US, "%.0f Wh", wattHours)
         }
     }
 
