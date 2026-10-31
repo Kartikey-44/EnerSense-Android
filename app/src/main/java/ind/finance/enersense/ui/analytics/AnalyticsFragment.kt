@@ -200,15 +200,13 @@ class AnalyticsFragment : Fragment(R.layout.fragment_analytics) {
 
         var totalWh = 0.0
         var highestWh = 0.0
-        var sumAvg = 0.0
 
         buckets.forEach { bucket ->
             val consumption = bucket.consumption ?: bucket.totalConsumption ?: 0.0
             totalWh += consumption
             if (consumption > highestWh) highestWh = consumption
-            sumAvg += bucket.averageDemand ?: consumption
         }
-        val averageWh = if (buckets.isNotEmpty()) sumAvg / buckets.size else 0.0
+        val averageWh = if (buckets.isNotEmpty()) totalWh / buckets.size else 0.0
 
         // Consumer-friendly units: use kWh when total is high, Wh when appropriate
         val (formattedTotal, totalUnit) = formatEnergy(totalWh)

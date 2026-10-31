@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 sealed class SimulationUiState {
     object Idle : SimulationUiState()
@@ -35,6 +37,7 @@ class SimulationViewModel(
     val uiState: StateFlow<SimulationUiState> = _uiState.asStateFlow()
 
     private var simulationJob: Job? = null
+    private val advanceMutex = Mutex()
 
     val consumerId: String get() = sessionManager.consumerId
     val meterId: String get() = sessionManager.meterId
@@ -97,7 +100,10 @@ class SimulationViewModel(
             if (currentDto != null) {
                 _uiState.value = SimulationUiState.Running(currentDto, isPlaying = isPlayingState(currentState), isAdvancing = true)
             }
-            when (val result = simulationRepository.advanceSimulation(consumerId, meterId)) {
+            val result = advanceMutex.withLock {
+                simulationRepository.advanceSimulation(consumerId, meterId)
+            }
+            when (result) {
                 is NetworkResult.Success -> {
                     val state = result.data
                     val isPlaying = isPlayingState(currentState)
@@ -198,7 +204,11 @@ class SimulationViewModel(
                     else -> null
                 }
 
-                when (val result = simulationRepository.advanceSimulation(consumerId, meterId)) {
+                val result = advanceMutex.withLock {
+                    simulationRepository.advanceSimulation(consumerId, meterId)
+                }
+
+                when (result) {
                     is NetworkResult.Success -> {
                         val state = result.data
                         if (state.completed == true) {
