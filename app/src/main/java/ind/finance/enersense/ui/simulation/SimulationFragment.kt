@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -261,7 +260,7 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
         val timeStr = anomaly.simulatedTimestamp ?: state.currentDate ?: "Unknown Time"
         val consumedWh = anomaly.currentConsumptionWh ?: state.currentReading ?: 0.0
         val typicalWh = anomaly.typicalConsumptionWh ?: 0.0
-        val contentText = "Time: $timeStr | Consumed: ${String.format(Locale.US, "%.3f Wh", consumedWh)} (Typical: ${String.format(Locale.US, "%.3f Wh", typicalWh)})"
+        val contentText = "Time: $timeStr | Consumed: ${String.format(Locale.US, "%.3f Wh", consumedWh)} (Typical usage: ${String.format(Locale.US, "%.3f Wh", typicalWh)})"
 
         val largeIcon = BitmapFactory.decodeResource(context.resources, R.drawable.logo)
 
@@ -295,7 +294,7 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
         val messageText = buildString {
             append("Timestamp: ").append(timeStr).append("\n")
             append("Consumed: ").append(String.format(Locale.US, "%.3f Wh", consumedWh)).append("\n")
-            append("Forecasted / Typical: ").append(String.format(Locale.US, "%.3f Wh", typicalWh)).append("\n")
+            append("Typical usage: ").append(String.format(Locale.US, "%.3f Wh", typicalWh)).append("\n")
             append("Difference: ").append(String.format(Locale.US, "%.3f Wh", diffWh)).append("\n")
             append("Above Typical: ").append(String.format(Locale.US, "%.1f%%", pct)).append("\n\n")
             append(userMsg)
@@ -304,13 +303,7 @@ class SimulationFragment : Fragment(R.layout.fragment_simulation) {
         anomalyDialog = AlertDialog.Builder(requireContext())
             .setTitle("⚠️ Unusual Energy Usage Detected")
             .setMessage(messageText)
-            .setPositiveButton("Fixed") { dialog, _ ->
-                dialog.dismiss()
-                anomalyDialog = null
-                Toast.makeText(requireContext(), "Anomaly marked as fixed", Toast.LENGTH_SHORT).show()
-                viewModel.resumeSimulation()
-            }
-            .setNegativeButton("Ignore") { dialog, _ ->
+            .setPositiveButton("Acknowledge and Continue") { dialog, _ ->
                 dialog.dismiss()
                 anomalyDialog = null
                 viewModel.resumeSimulation()
