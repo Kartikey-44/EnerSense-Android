@@ -233,7 +233,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                                 binding.tvAnomalyStatus.text = status
 
                                 when (status) {
-                                    "INSUFFICIENT_BASELINE" -> {
+                                    // The backend reports LEARNING; INSUFFICIENT_BASELINE is the older name.
+                                    "LEARNING", "INSUFFICIENT_BASELINE" -> {
                                         binding.tvAnomalyStatus.setTextColor(resources.getColor(R.color.text_secondary, null))
                                         binding.tvAnomalyMessage.text = anomaly.userMessage ?: "We're still learning your typical energy usage."
                                         binding.tvAnomalyDetails.visibility = View.GONE

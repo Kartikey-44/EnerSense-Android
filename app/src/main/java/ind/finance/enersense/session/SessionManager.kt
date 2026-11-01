@@ -7,11 +7,11 @@ class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     var consumerId: String
-        get() = prefs.getString(KEY_CONSUMER_ID, "APT01") ?: "APT01"
+        get() = prefs.getString(KEY_CONSUMER_ID, "APT35") ?: "APT35"
         set(value) = prefs.edit().putString(KEY_CONSUMER_ID, value).apply()
 
     var meterId: String
-        get() = prefs.getString(KEY_METER_ID, "MTR01") ?: "MTR01"
+        get() = prefs.getString(KEY_METER_ID, "MTR35") ?: "MTR35"
         set(value) = prefs.edit().putString(KEY_METER_ID, value).apply()
 
     fun clearSession() {
