@@ -45,6 +45,16 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         bottomNav.setupWithNavController(navController)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.destination_home -> bottomNav.menu.findItem(R.id.destination_home)?.isChecked = true
+                R.id.destination_analytics -> bottomNav.menu.findItem(R.id.destination_analytics)?.isChecked = true
+                R.id.destination_history -> bottomNav.menu.findItem(R.id.destination_history)?.isChecked = true
+                R.id.destination_forecast -> bottomNav.menu.findItem(R.id.destination_forecast)?.isChecked = true
+                R.id.destination_profile -> bottomNav.menu.findItem(R.id.destination_profile)?.isChecked = true
+            }
+        }
+
         findViewById<android.widget.ImageView>(R.id.ivProfileHeader)?.setOnClickListener {
             if (navController.currentDestination?.id != R.id.destination_profile) {
                 val navOptions = androidx.navigation.NavOptions.Builder()
