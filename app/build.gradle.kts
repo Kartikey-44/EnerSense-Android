@@ -1,4 +1,3 @@
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.Properties
 
@@ -20,18 +19,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        // Reached via `adb reverse tcp:8080 tcp:8080`, which tunnels the device's own
-        // localhost:8080 to the host over ADB. Avoids the host firewall entirely.
-        // Host-loopback alternative, if the firewall allows inbound 8080: http://10.0.2.2:8080/
-        buildConfigField("String", "BASE_URL", "\"http://127.0.0.1:8080/\"")
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://127.0.0.1:8080/\"")
+        }
         release {
             optimization {
                 enable = true
                 packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
             }
+            buildConfigField("String", "BASE_URL", "\"http://13.200.250.105:8080/\"")
         }
     }
     compileOptions {
@@ -100,11 +99,11 @@ val adbReverse = tasks.register<Exec>("adbReverse") {
     // No device attached is a normal state (a plain `assemble`, CI, a unit-test run).
     // It must not fail the build.
     isIgnoreExitValue = true
-    standardOutput = ByteArrayOutputStream()
-    errorOutput = ByteArrayOutputStream()
+    standardOutput = System.out
+    errorOutput = System.err
 }
 
-// Runs after any install task, which is what Android Studio's Run button triggers.
-tasks.matching { it.name.startsWith("install") }.configureEach {
-    finalizedBy(adbReverse)
+// Runs before any install task or pre-build step, ensuring the ADB reverse tunnel is active before app deployment.
+tasks.matching { it.name.startsWith("install") || it.name == "preDebugBuild" }.configureEach {
+    dependsOn(adbReverse)
 }
