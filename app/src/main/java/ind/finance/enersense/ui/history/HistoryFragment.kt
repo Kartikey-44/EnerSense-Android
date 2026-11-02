@@ -173,8 +173,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
                                 binding.tvHistoryStateMessage.visibility = View.GONE
                                 historyAdapter.submitList(state.items)
 
-                                val totalKwh = state.items.sumOf { (it.consumption ?: it.totalConsumption ?: 0.0) }
-                                val avgKwh = if (state.items.isNotEmpty()) totalKwh / state.items.size else 0.0
+                                val totalWh = state.items.sumOf { (it.consumption ?: it.totalConsumption ?: 0.0) }
+                                val totalKwh = totalWh / 1000.0
+                                val avgWh = if (state.items.isNotEmpty()) totalWh / state.items.size else 0.0
+                                val avgKwh = avgWh / 1000.0
                                 binding.tv7DayTotal.text = String.format(Locale.US, "%.1f kWh", totalKwh)
                                 binding.tv7DayAvg.text = String.format(Locale.US, "%.1f kWh", avgKwh)
                             }
@@ -211,7 +213,8 @@ class HistoryFragment : Fragment(R.layout.fragment_history) {
                             is DetailUiState.Success -> {
                                 val item = state.data
                                 val date = item.date ?: item.timestamp ?: "Selected Date"
-                                val kwh = item.consumption ?: item.totalConsumption ?: 0.0
+                                val wh = item.consumption ?: item.totalConsumption ?: 0.0
+                                val kwh = wh / 1000.0
                                 MaterialAlertDialogBuilder(requireContext())
                                     .setTitle("Consumption Details")
                                     .setMessage("Date: $date\nConsumption: ${String.format(Locale.US, "%.2f kWh", kwh)}\nConsumer ID: ${item.consumerId ?: viewModel.consumerId}\nMeter ID: ${item.meterId ?: viewModel.meterId}")

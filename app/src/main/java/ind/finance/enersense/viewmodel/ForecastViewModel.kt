@@ -50,7 +50,7 @@ class ForecastViewModel(
         forecastJob?.cancel()
         forecastJob = viewModelScope.launch {
             while (isActive) {
-                delay(4000L)
+                delay(2000L)
                 fetchForecastSilent()
             }
         }

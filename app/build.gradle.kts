@@ -23,7 +23,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://127.0.0.1:8080/\"")
+            buildConfigField("String", "BASE_URL", "\"http://13.200.250.105:8080/\"")
         }
         release {
             optimization {

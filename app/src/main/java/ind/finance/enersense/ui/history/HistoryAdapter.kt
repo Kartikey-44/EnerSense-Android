@@ -32,7 +32,8 @@ class HistoryAdapter(
             val rawDate = item.date ?: item.timestamp ?: ""
             binding.tvHistoryDate.text = formatDate(rawDate)
 
-            val kwh = item.consumption ?: item.totalConsumption ?: 0.0
+            val wh = item.consumption ?: item.totalConsumption ?: 0.0
+            val kwh = wh / 1000.0
             binding.tvHistoryConsumption.text = String.format(Locale.US, "%.2f kWh", kwh)
 
             binding.root.setOnClickListener {
